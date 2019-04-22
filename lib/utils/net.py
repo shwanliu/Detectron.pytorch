@@ -8,6 +8,7 @@ from torch.autograd import Variable
 
 from core.config import cfg
 import nn as mynn
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +67,10 @@ def compute_iou(output, target, bbox_inside_weights, bbox_outside_weights,
     miouk = iouk - ((area_c - unionk) / area_c)
     iou_weights = bbox_inside_weights.view(-1, 4).mean(1) * bbox_outside_weights.view(-1, 4).mean(1)
     iouk = ((1 - iouk) * iou_weights).sum(0) / output.size(0)
-    miouk = ((1 - miouk) * iou_weights).sum(0) / output.size(0)
+    # old GIOU loss
+    # miouk = ((1 - miouk) * iou_weights).sum(0) / output.size(0)
+    # log-space GIOU loss
+    miouk = ((1 - miouk) * iou_weights).sum(0)*math.exp(-miouk) / output.size(0)
 
     return iouk, miouk
 
