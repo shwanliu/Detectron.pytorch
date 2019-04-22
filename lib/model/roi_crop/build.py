@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 import torch
-from torch.utils.cpp_extension import BuildExtension
+from torch.utils.ffi import create_extension
 
 #this_file = os.path.dirname(__file__)
 
@@ -22,7 +22,7 @@ print(this_file)
 extra_objects = ['src/roi_crop_cuda_kernel.cu.o']
 extra_objects = [os.path.join(this_file, fname) for fname in extra_objects]
 
-ffi = BuildExtension(
+ffi = create_extension(
     '_ext.roi_crop',
     headers=headers,
     sources=sources,

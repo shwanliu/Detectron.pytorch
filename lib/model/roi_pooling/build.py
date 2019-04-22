@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 import torch
-from torch.utils.cpp_extension import BuildExtension
+from torch.utils.ffi import create_extension
 
 
 sources = ['src/roi_pooling.c']
@@ -21,7 +21,7 @@ print(this_file)
 extra_objects = ['src/roi_pooling.cu.o']
 extra_objects = [os.path.join(this_file, fname) for fname in extra_objects]
 
-ffi = BuildExtension(
+ffi = create_extension(
     '_ext.roi_pooling',
     headers=headers,
     sources=sources,
