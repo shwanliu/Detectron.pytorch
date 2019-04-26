@@ -67,11 +67,14 @@ def compute_iou(output, target, bbox_inside_weights, bbox_outside_weights,
     iou_weights = bbox_inside_weights.view(-1, 4).mean(1) * bbox_outside_weights.view(-1, 4).mean(1)
     loss_iouk = ((1 - iouk) * iou_weights).sum(0) / output.size(0)
     # old GIOU loss
-    loss_log_miouk = ((1 - miouk) * iou_weights).sum(0) / output.size(0)
+    loss_miouk = ((1 - miouk) * iou_weights).sum(0) / output.size(0)
     # log-space GIOU loss
-    loss_miouk = (((1 - miouk) * torch.exp(- miouk)) * iou_weights).sum(0) / output.size(0)
-
-    return loss_iouk,loss_miouk,loss_log_miouk
+    loss_exp_miouk = (((1 - miouk) * torch.exp(- miouk)) * iou_weights).sum(0) / output.size(0)
+    # version1 sensitive to the small size of Object!
+    loss_GIoU1SSize= (((1 - miouk) + torch.exp(-area_c))* iou_weights).sum(0) / output.size(0)
+    # version2 sensitive to the small size of Object!
+    loss_GIoU2SSize= (((1 - miouk) * torch.exp(- miouk) + torch.exp(-area_c)) * iou_weights).sum(0) / output.size(0)
+    return loss_iouk,loss_miouk,loss_exp_miouk
 
 
 def smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_weights, beta=1.0):
