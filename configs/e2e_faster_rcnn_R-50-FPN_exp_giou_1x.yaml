@@ -2,7 +2,7 @@ MODEL:
   TYPE: generalized_rcnn
   CONV_BODY: FPN.fpn_ResNet50_conv5_body
   FASTER_RCNN: True
-  LOSS_TYPE: 'log_giou'
+  LOSS_TYPE: 'exp_giou'
   LOSS_BBOX_WEIGHT: 10.
 RESNETS:
   IMAGENET_PRETRAINED_WEIGHTS: 'data/pretrained_model/resnet50_caffe.pth'
