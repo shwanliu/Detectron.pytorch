@@ -196,7 +196,7 @@ class Generalized_RCNN(nn.Module):
                 return_dict['losses']['loss_rpn_bbox'] = loss_rpn_bbox
 
             # bbox loss
-            loss_cls, loss_bbox, accuracy_cls, bbox_sl1, bbox_iou, bbox_giou,bbox_logGiou = fast_rcnn_heads.fast_rcnn_losses(
+            loss_cls, loss_bbox, accuracy_cls, bbox_sl1, bbox_iou, bbox_giou,bbox_logGiou,iou,giou = fast_rcnn_heads.fast_rcnn_losses(
                 cls_score, bbox_pred, rpn_ret['labels_int32'], rpn_ret['bbox_targets'],
                 rpn_ret['bbox_inside_weights'], rpn_ret['bbox_outside_weights'])
             return_dict['losses']['loss_cls'] = loss_cls
@@ -206,6 +206,8 @@ class Generalized_RCNN(nn.Module):
             return_dict['metrics']['bbox_loss_iou'] = bbox_iou
             return_dict['metrics']['bbox_loss_giou'] = bbox_giou
             return_dict['metrics']['bbox_loss_log_giou'] = bbox_logGiou
+            return_dict['metrics']['iou'] = iou
+            return_dict['metrics']['giou'] = giou
 
             if cfg.MODEL.MASK_ON:
                 if getattr(self.Mask_Head, 'SHARE_RES5', False):
