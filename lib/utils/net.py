@@ -65,13 +65,13 @@ def compute_iou(output, target, bbox_inside_weights, bbox_outside_weights,
     area_c = (xc2 - xc1) * (yc2 - yc1) + 1e-7
     miouk = iouk - ((area_c - unionk) / area_c)
     iou_weights = bbox_inside_weights.view(-1, 4).mean(1) * bbox_outside_weights.view(-1, 4).mean(1)
-    iouk = ((1 - iouk) * iou_weights).sum(0) / output.size(0)
+    loss_iouk = ((1 - iouk) * iou_weights).sum(0) / output.size(0)
     # old GIOU loss
-    miouk = ((1 - miouk) * iou_weights).sum(0) / output.size(0)
+    loss_log_miouk = ((1 - miouk) * iou_weights).sum(0) / output.size(0)
     # log-space GIOU loss
-    log_miouk = (((1 - miouk) * torch.exp(- miouk)) * iou_weights).sum(0) / output.size(0)
+    loss_miouk = (((1 - miouk) * torch.exp(- miouk)) * iou_weights).sum(0) / output.size(0)
 
-    return iouk, miouk, log_miouk
+    return iouk, miouk,loss_iouk,loss_miouk,loss_log_miouk
 
 
 def smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_weights, beta=1.0):
