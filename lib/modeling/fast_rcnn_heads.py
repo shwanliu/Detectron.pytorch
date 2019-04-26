@@ -76,7 +76,7 @@ def fast_rcnn_losses(cls_score, bbox_pred, label_int32, bbox_targets,
     cls_preds = cls_score.max(dim=1)[1].type_as(rois_label)
     accuracy_cls = cls_preds.eq(rois_label).float().mean(dim=0)
 
-    return loss_cls, loss_bbox, accuracy_cls, sl1_loss_bbox, iou_loss_bbox, giou_loss_bbox,log_giou_loss_bbox,iou,giou
+    return loss_cls, loss_bbox, accuracy_cls, sl1_loss_bbox, iou_loss_bbox, giou_loss_bbox,log_giou_loss_bbox
 
 
 # ---------------------------------------------------------------------------- #

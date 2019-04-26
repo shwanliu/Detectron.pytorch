@@ -71,7 +71,7 @@ def compute_iou(output, target, bbox_inside_weights, bbox_outside_weights,
     # log-space GIOU loss
     loss_miouk = (((1 - miouk) * torch.exp(- miouk)) * iou_weights).sum(0) / output.size(0)
 
-    return loss_iouk,loss_miouk,loss_log_miouk,iouk,miouk
+    return loss_iouk,loss_miouk,loss_log_miouk
 
 
 def smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_weights, beta=1.0):

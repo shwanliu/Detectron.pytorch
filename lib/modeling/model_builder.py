@@ -206,8 +206,6 @@ class Generalized_RCNN(nn.Module):
             return_dict['metrics']['bbox_loss_iou'] = bbox_iou
             return_dict['metrics']['bbox_loss_giou'] = bbox_giou
             return_dict['metrics']['bbox_loss_log_giou'] = bbox_logGiou
-            return_dict['metrics']['iou'] = iou
-            return_dict['metrics']['giou'] = giou
 
             if cfg.MODEL.MASK_ON:
                 if getattr(self.Mask_Head, 'SHARE_RES5', False):
